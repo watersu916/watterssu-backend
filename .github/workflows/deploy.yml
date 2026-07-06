@@ -17,7 +17,6 @@ jobs:
       with:
         node-version: 20
         cache: 'npm'
-        cache-dependency-path: package-lock.json
 
     - name: Install Dependencies
       run: npm ci
@@ -43,8 +42,8 @@ jobs:
         context: .
         push: true
         tags: |
-          watersu916/watterssu-backend:latest
-          watersu916/watterssu-backend:${{ github.sha }}
+          ${{ secrets.DOCKERHUB_USERNAME }}/watterssu-backend:latest
+          ${{ secrets.DOCKERHUB_USERNAME }}/watterssu-backend:${{ github.sha }}
 
     - name: Checkout GitOps Repository
       uses: actions/checkout@v4
@@ -56,7 +55,7 @@ jobs:
     - name: Update Backend Image Tag
       run: |
         cd gitops-repo
-        sed -i 's|image: watersu916/watterssu-backend:.*|image: watersu916/watterssu-backend:${{ github.sha }}|' k3s/backend-deploy.yaml
+        sed -i 's|image: .*/watterssu-backend:.*|image: ${{ secrets.DOCKERHUB_USERNAME }}/watterssu-backend:${{ github.sha }}|' k3s/backend-deploy.yaml
 
     - name: Commit and Push Manifest Changes
       run: |
