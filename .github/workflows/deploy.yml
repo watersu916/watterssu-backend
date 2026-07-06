@@ -1,0 +1,66 @@
+name: Deploy Backend
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: 'npm'
+        cache-dependency-path: package-lock.json
+
+    - name: Install Dependencies
+      run: npm ci
+
+    - name: Run lint/test if configured
+      run: |
+        if npm run | grep -q "lint"; then
+          npm run lint
+        fi
+        if npm run | grep -q "test" && ! grep -q "no test specified" package.json; then
+          npm run test
+        fi
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Build and Push Docker Image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: |
+          watersu916/watterssu-backend:latest
+          watersu916/watterssu-backend:${{ github.sha }}
+
+    - name: Checkout GitOps Repository
+      uses: actions/checkout@v4
+      with:
+        repository: watersu916/watterssu-gitops
+        token: ${{ secrets.GITOPS_REPO_TOKEN }}
+        path: gitops-repo
+
+    - name: Update Backend Image Tag
+      run: |
+        cd gitops-repo
+        sed -i 's|image: watersu916/watterssu-backend:.*|image: watersu916/watterssu-backend:${{ github.sha }}|' k3s/backend-deploy.yaml
+
+    - name: Commit and Push Manifest Changes
+      run: |
+        cd gitops-repo
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git diff --quiet || (git add k3s/backend-deploy.yaml && git commit -m "chore: update backend image to ${{ github.sha }}" && git push origin main)
