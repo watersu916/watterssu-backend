@@ -66,9 +66,20 @@ const projects = [
     }
   },
   {
+    id: 'onprem-3tier-infra',
+    title: '3-Tier Web/WAS Infrastructure 구축',
+    subtitle: 'Rocky Linux 기반 고가용성(HA) 3-Tier 엔터프라이즈 인프라 아키텍처 구축',
+    summary: '단일 서버 환경에서는 장애 발생 시 서비스가 중단되고, 스토리지와 애플리케이션이 강하게 결합되어 확장성과 운영 효율이 떨어지는 문제가 있었습니다. 이를 해결하기 위해 DNS, Load Balancer, Web Cluster, NAS(NFS), SAN(NVMe/TCP), Database를 계층별로 분리하여 고가용성과 확장성을 갖춘 Enterprise Linux 기반 3-Tier 인프라를 설계·구축했습니다.',
+    tags: ['Rocky Linux', 'Apache', 'HAProxy', 'MariaDB', 'NFS'],
+    architecture: {
+      nodes: [],
+      connections: []
+    }
+  },
+  {
     id: 'collab-whiteboard',
     title: 'AI Agent 기반 구인 · 구직 자동화 플랫폼 구축',
-    subtitle: 'FastAPI & Docker 기반 시니어 일자리 자동 매칭 플랫폼',
+    subtitle: 'OCR · STT 기반 시니어 맞춤형 구인 구직 플랫폼',
     summary: '은퇴 후 일상에 활력과 외출의 요소를 주는 소일거리를 가장 쉽게 연결하고자 구축된 AI Agent 기반 구인 · 구직 자동화 플랫폼 \'일로와 (iIlowa)\'입니다. 이미지 촬영(OCR)과 음성 발화(STT) 결합형 공고 자동화 및 AI 에이전트 맞춤 추천 기술을 융합하여 JIT(Just-In-Time) 시니어 매칭 생태계를 구현했습니다.',
     tags: ['FastAPI', 'PostgreSQL', 'Docker', 'Clova OCR/STT', 'LLM', 'React'],
     architecture: {
