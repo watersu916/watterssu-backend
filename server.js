@@ -14,7 +14,7 @@ const projects = [
   {
     id: 'portfolio-k3s',
     title: 'ZeroTrust 기반 내부 접근 제어 플랫폼 구축',
-    subtitle: '승인 기반 임시 권한 관리 및 Teleport 기반 단일 통제 접속 체계 검증',
+    subtitle: 'Teleport를 활용한 승인 기반 임시 권한 관리 및 단일 통제 접속 체계 검증',
     summary: '임시 권한 승인/자동 회수 플랫폼을 구축하고, 서버와 쿠버네티스 접근 경로를 Teleport로 단일화했습니다. 감사 로그와 명령어 입력 단위의 세션 레코딩을 AWS 인프라(DynamoDB, S3)에 적재하여 강력한 사후 추적 능력을 검증했습니다.',
     tags: ['Teleport', 'Kubernetes', 'ArgoCD', 'Terraform', 'Prometheus'],
     architecture: {
